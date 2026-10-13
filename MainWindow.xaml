@@ -3,17 +3,105 @@
     x:Class="SettingsClone.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:SettingsClone"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Title="SettingsClone">
-
-    <Window.SystemBackdrop>
-        <MicaBackdrop />
-    </Window.SystemBackdrop>
-
-    <Grid>
-
+    Title="Settings">
+    <Window.SystemBackdrop><MicaBackdrop /></Window.SystemBackdrop>
+    <Grid x:Name="ShellGrid" Background="{StaticResource SettingsBackgroundBrush}" SizeChanged="ShellGrid_SizeChanged">
+        <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+        <!-- Windows supplies the caption buttons and the window drag behavior. -->
+        <TitleBar x:Name="SettingsTitleBar" Title="Settings" Height="48"
+                  IsBackButtonVisible="True" IsBackButtonEnabled="False" BackRequested="SettingsTitleBar_BackRequested">
+            <TitleBar.Content>
+                <Grid x:Name="SearchContainer" Width="520" VerticalAlignment="Center">
+                    <TextBox x:Name="SearchBox" PlaceholderText="Find a setting" Height="32"
+                             Padding="36,4,12,4" CornerRadius="20" Background="White"
+                             BorderBrush="{StaticResource SettingsBorderBrush}" BorderThickness="1"
+                             KeyDown="SearchBox_KeyDown" AutomationProperties.AutomationId="SettingsSearch"
+                             AutomationProperties.Name="Find a setting"
+                             ToolTipService.ToolTip="Search demo: type Home or System and press Enter." />
+                    <FontIcon Glyph="&#xE721;" FontSize="16" Margin="12,0,0,0"
+                              HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False" />
+                </Grid>
+            </TitleBar.Content>
+        </TitleBar>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions><ColumnDefinition x:Name="SidebarColumn" Width="304" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+            <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Margin="16,8,8,24">
+                    <Grid Margin="0,0,0,28" ColumnSpacing="12">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                        <Border x:Name="AvatarBorder" Width="60" Height="60" CornerRadius="30" Background="#FAFAFA">
+                            <FontIcon Glyph="&#xE77B;" FontSize="36" Foreground="#909090" />
+                        </Border>
+                        <StackPanel x:Name="ProfileDetails" Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Kim Yến Trần" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="kimyen@example.com" FontSize="12" TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                    </Grid>
+                    <StackPanel x:Name="NavigationItems" Spacing="4">
+                        <ToggleButton x:Name="HomeButton" Tag="Home" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.AutomationId="NavHome" AutomationProperties.Name="Home">
+                            <Grid ColumnSpacing="16"><Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE80F;" Foreground="#D67C1C" FontSize="20"/><TextBlock Grid.Column="1" Text="Home" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ToggleButton>
+                        <ToggleButton x:Name="SystemButton" Tag="System" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.AutomationId="NavSystem" AutomationProperties.Name="System">
+                            <Grid ColumnSpacing="16"><Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE7F4;" Foreground="#009BC2" FontSize="20"/><TextBlock Grid.Column="1" Text="System" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ToggleButton>
+                        <ToggleButton Tag="Bluetooth &amp; devices" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Bluetooth &amp; devices">
+                            <Grid ColumnSpacing="16"><Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE702;" Foreground="#0085FF" FontSize="20"/><TextBlock Grid.Column="1" Text="Bluetooth &amp; devices" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ToggleButton>
+                        <ToggleButton Tag="Network &amp; internet" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Network &amp; internet">
+                            <Grid ColumnSpacing="16"><Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE701;" Foreground="#009DCE" FontSize="20"/><TextBlock Grid.Column="1" Text="Network &amp; internet" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ToggleButton>
+                        <ToggleButton Tag="Personalization" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Personalization">
+                            <Grid ColumnSpacing="16"><Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE790;" Foreground="#CD8A30" FontSize="20"/><TextBlock Grid.Column="1" Text="Personalization" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ToggleButton>
+                        <ToggleButton Tag="Apps" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Apps">
+                            <Grid ColumnSpacing="16"><Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE74C;" Foreground="#517C96" FontSize="20"/><TextBlock Grid.Column="1" Text="Apps" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ToggleButton>
+                        <ToggleButton Tag="Accounts" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Accounts">
+                            <Grid ColumnSpacing="16"><Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE77B;" Foreground="#10B8A6" FontSize="20"/><TextBlock Grid.Column="1" Text="Accounts" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ToggleButton>
+                        <ToggleButton Tag="Time &amp; language" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Time &amp; language">
+                            <Grid ColumnSpacing="16"><Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE713;" Foreground="#0899C3" FontSize="20"/><TextBlock Grid.Column="1" Text="Time &amp; language" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ToggleButton>
+                        <ToggleButton Tag="Gaming" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Gaming">
+                            <Grid ColumnSpacing="16"><Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE7FC;" Foreground="#688491" FontSize="20"/><TextBlock Grid.Column="1" Text="Gaming" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ToggleButton>
+                        <ToggleButton Tag="Accessibility" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Accessibility">
+                            <Grid ColumnSpacing="16"><Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE776;" Foreground="#0099E5" FontSize="20"/><TextBlock Grid.Column="1" Text="Accessibility" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ToggleButton>
+                        <ToggleButton Tag="Privacy &amp; security" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Privacy &amp; security">
+                            <Grid ColumnSpacing="16"><Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xEA18;" Foreground="#79858F" FontSize="20"/><TextBlock Grid.Column="1" Text="Privacy &amp; security" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ToggleButton>
+                        <ToggleButton Tag="Windows Update" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Windows Update">
+                            <Grid ColumnSpacing="16"><Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE895;" Foreground="#009CE5" FontSize="20"/><TextBlock Grid.Column="1" Text="Windows Update" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ToggleButton>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+            <Frame x:Name="ContentFrame" Grid.Column="1" Navigated="ContentFrame_Navigated" NavigationFailed="ContentFrame_NavigationFailed" />
+        </Grid>
     </Grid>
 </Window>
