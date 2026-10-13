@@ -70,16 +70,30 @@
                                             </VisualState.Setters>
                                         </VisualState>
                                         <VisualState x:Name="Disabled" />
-                                    </VisualStateGroup>
-                                    <VisualStateGroup x:Name="CheckStates">
-                                        <VisualState x:Name="Unchecked" />
                                         <VisualState x:Name="Checked">
                                             <VisualState.Setters>
                                                 <Setter Target="SelectedBorder.Background" Value="#E5EBF0" />
                                                 <Setter Target="SelectionIndicator.Opacity" Value="1" />
                                             </VisualState.Setters>
                                         </VisualState>
-                                        <VisualState x:Name="Indeterminate" />
+                                        <VisualState x:Name="CheckedPointerOver">
+                                            <VisualState.Setters>
+                                                <Setter Target="SelectedBorder.Background" Value="#DFE6EB" />
+                                                <Setter Target="SelectionIndicator.Opacity" Value="1" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="CheckedPressed">
+                                            <VisualState.Setters>
+                                                <Setter Target="SelectedBorder.Background" Value="#DCE3EA" />
+                                                <Setter Target="SelectionIndicator.Opacity" Value="1" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="CheckedDisabled">
+                                            <VisualState.Setters>
+                                                <Setter Target="SelectedBorder.Background" Value="#E5EBF0" />
+                                                <Setter Target="SelectionIndicator.Opacity" Value="0.4" />
+                                            </VisualState.Setters>
+                                        </VisualState>
                                     </VisualStateGroup>
                                 </VisualStateManager.VisualStateGroups>
                                 <Border x:Name="SelectedBorder" Background="Transparent" CornerRadius="5" />
