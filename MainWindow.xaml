@@ -3,170 +3,125 @@
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
-    <Grid x:Name="ShellGrid" Background="{StaticResource SettingsBackgroundBrush}" SizeChanged="ShellGrid_SizeChanged">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <!-- Windows supplies the caption buttons and the window drag behavior. -->
-        <TitleBar x:Name="SettingsTitleBar" Title="Settings" Height="48" IsBackButtonVisible="True" IsBackButtonEnabled="False" BackRequested="SettingsTitleBar_BackRequested">
-            <TitleBar.Content>
-                <Grid x:Name="SearchContainer" Width="520" VerticalAlignment="Center">
-                    <TextBox x:Name="SearchBox" PlaceholderText="Find a setting" Height="32" Padding="36,4,12,4" CornerRadius="20" Background="White" BorderBrush="{StaticResource SettingsBorderBrush}" BorderThickness="1" KeyDown="SearchBox_KeyDown" AutomationProperties.AutomationId="SettingsSearch" AutomationProperties.Name="Find a setting" ToolTipService.ToolTip="Search demo: type Home or System and press Enter." />
-                    <FontIcon Glyph="&#xE721;" FontSize="16" Margin="12,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False" />
-                </Grid>
-            </TitleBar.Content>
-        </TitleBar>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="SidebarColumn" Width="304" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <StackPanel Margin="16,8,8,24">
-                    <Grid Margin="0,0,0,28" ColumnSpacing="12">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Border x:Name="AvatarBorder" Width="60" Height="60" CornerRadius="30" Background="#FAFAFA">
-                            <Viewbox Width="36" Height="36">
-                                <Grid Width="36" Height="36">
-                                    <Ellipse Width="18" Height="18" Fill="#909090" HorizontalAlignment="Center" VerticalAlignment="Top" />
-                                    <Border Width="28" Height="14" Background="#909090" CornerRadius="3,3,12,12" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
-                                </Grid>
-                            </Viewbox>
-                        </Border>
-                        <StackPanel x:Name="ProfileDetails" Grid.Column="1" VerticalAlignment="Center">
-                            <TextBlock Text="Kim Yến Trần" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
-                            <TextBlock Text="kimyen@example.com" FontSize="12" TextTrimming="CharacterEllipsis" />
-                        </StackPanel>
+    <!-- Page supplies the Control owner required for automatic state triggers. -->
+    <Page>
+        <Grid x:Name="ShellGrid" Background="{StaticResource SettingsBackgroundBrush}" SizeChanged="ShellGrid_SizeChanged">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="ShellWidthStates">
+                    <VisualState x:Name="WideShell">
+                        <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="1000" /></VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="SidebarColumn.Width" Value="304" />
+                            <Setter Target="ProfileDetails.Visibility" Value="Visible" />
+                            <Setter Target="AvatarBorder.Width" Value="60" />
+                            <Setter Target="AvatarBorder.Height" Value="60" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="MediumShell">
+                        <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="760" /></VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="SidebarColumn.Width" Value="228" />
+                            <Setter Target="ProfileDetails.Visibility" Value="Visible" />
+                            <Setter Target="AvatarBorder.Width" Value="60" />
+                            <Setter Target="AvatarBorder.Height" Value="60" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="CompactShell">
+                        <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="0" /></VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="SidebarColumn.Width" Value="72" />
+                            <Setter Target="ProfileDetails.Visibility" Value="Collapsed" />
+                            <Setter Target="AvatarBorder.Width" Value="40" />
+                            <Setter Target="AvatarBorder.Height" Value="40" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="SearchPositionStates">
+                    <VisualState x:Name="WideSearch">
+                        <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="1200" /></VisualState.StateTriggers>
+                        <VisualState.Setters><Setter Target="SearchContainer.Margin" Value="120,0,0,0" /></VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="NarrowSearch">
+                        <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="0" /></VisualState.StateTriggers>
+                        <VisualState.Setters><Setter Target="SearchContainer.Margin" Value="0" /></VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <!-- Windows supplies the caption buttons and the window drag behavior. -->
+            <TitleBar x:Name="SettingsTitleBar" Title="Settings" Height="48" IsBackButtonVisible="True" IsBackButtonEnabled="False" BackRequested="SettingsTitleBar_BackRequested">
+                <TitleBar.Content>
+                    <Grid x:Name="SearchContainer" Width="514" VerticalAlignment="Center">
+                        <TextBox x:Name="SearchBox" PlaceholderText="Find a setting" Height="32" Padding="36,4,12,4" CornerRadius="20" Background="White" BorderBrush="{StaticResource SettingsBorderBrush}" BorderThickness="1" KeyDown="SearchBox_KeyDown" AutomationProperties.AutomationId="SettingsSearch" AutomationProperties.Name="Find a setting" ToolTipService.ToolTip="Search demo: type Home or System and press Enter." />
+                        <FontIcon Glyph="&#xE721;" FontSize="16" Margin="12,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False" />
                     </Grid>
-                    <StackPanel x:Name="NavigationItems" Spacing="4">
-                        <ToggleButton x:Name="HomeButton" Tag="Home" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.AutomationId="NavHome" AutomationProperties.Name="Home">
-                            <Grid ColumnSpacing="16">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Glyph="&#xE80F;" Foreground="#D67C1C" FontSize="20" />
-                                <TextBlock Grid.Column="1" Text="Home" VerticalAlignment="Center" />
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton x:Name="SystemButton" Tag="System" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.AutomationId="NavSystem" AutomationProperties.Name="System">
-                            <Grid ColumnSpacing="16">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Glyph="&#xE7F4;" Foreground="#009BC2" FontSize="20" />
-                                <TextBlock Grid.Column="1" Text="System" VerticalAlignment="Center" />
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton Tag="Bluetooth &amp; devices" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Bluetooth &amp; devices">
-                            <Grid ColumnSpacing="16">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Glyph="&#xE702;" Foreground="#0085FF" FontSize="20" />
-                                <TextBlock Grid.Column="1" Text="Bluetooth &amp; devices" VerticalAlignment="Center" />
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton Tag="Network &amp; internet" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Network &amp; internet">
-                            <Grid ColumnSpacing="16">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Glyph="&#xE701;" Foreground="#009DCE" FontSize="20" />
-                                <TextBlock Grid.Column="1" Text="Network &amp; internet" VerticalAlignment="Center" />
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton Tag="Personalization" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Personalization">
-                            <Grid ColumnSpacing="16">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Glyph="&#xE790;" Foreground="#CD8A30" FontSize="20" />
-                                <TextBlock Grid.Column="1" Text="Personalization" VerticalAlignment="Center" />
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton Tag="Apps" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Apps">
-                            <Grid ColumnSpacing="16">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Glyph="&#xE74C;" Foreground="#517C96" FontSize="20" />
-                                <TextBlock Grid.Column="1" Text="Apps" VerticalAlignment="Center" />
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton Tag="Accounts" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Accounts">
-                            <Grid ColumnSpacing="16">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Glyph="&#xE77B;" Foreground="#10B8A6" FontSize="20" />
-                                <TextBlock Grid.Column="1" Text="Accounts" VerticalAlignment="Center" />
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton Tag="Time &amp; language" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Time &amp; language">
-                            <Grid ColumnSpacing="16">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Glyph="&#xE823;" Foreground="#0899C3" FontSize="20" />
-                                <TextBlock Grid.Column="1" Text="Time &amp; language" VerticalAlignment="Center" />
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton Tag="Gaming" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Gaming">
-                            <Grid ColumnSpacing="16">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Glyph="&#xE7FC;" Foreground="#688491" FontSize="20" />
-                                <TextBlock Grid.Column="1" Text="Gaming" VerticalAlignment="Center" />
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton Tag="Accessibility" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Accessibility">
-                            <Grid ColumnSpacing="16">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Glyph="&#xE776;" Foreground="#0099E5" FontSize="20" />
-                                <TextBlock Grid.Column="1" Text="Accessibility" VerticalAlignment="Center" />
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton Tag="Privacy &amp; security" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Privacy &amp; security">
-                            <Grid ColumnSpacing="16">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Glyph="&#xEA18;" Foreground="#79858F" FontSize="20" />
-                                <TextBlock Grid.Column="1" Text="Privacy &amp; security" VerticalAlignment="Center" />
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton Tag="Windows Update" Style="{StaticResource SidebarButtonStyle}" Click="NavigationButton_Click" AutomationProperties.Name="Windows Update">
-                            <Grid ColumnSpacing="16">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Glyph="&#xE895;" Foreground="#009CE5" FontSize="20" />
-                                <TextBlock Grid.Column="1" Text="Windows Update" VerticalAlignment="Center" />
-                            </Grid>
-                        </ToggleButton>
+                </TitleBar.Content>
+            </TitleBar>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="SidebarColumn" Width="304" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="16,8,8,24">
+                        <Grid Margin="0,0,0,28" ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="AvatarBorder" Width="60" Height="60" CornerRadius="30" Background="#FAFAFA">
+                                <Viewbox Width="36" Height="36">
+                                    <Grid Width="36" Height="36">
+                                        <Ellipse Width="18" Height="18" Fill="#909090" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                                        <Border Width="28" Height="14" Background="#909090" CornerRadius="3,3,12,12" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+                                    </Grid>
+                                </Viewbox>
+                            </Border>
+                            <StackPanel x:Name="ProfileDetails" Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="Kim Yến Trần" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Text="kimyen@example.com" FontSize="12" TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+                        </Grid>
+                        <ItemsControl x:Name="NavigationItems">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <ToggleButton Tag="{Binding}" Style="{StaticResource SidebarButtonStyle}"
+                                                  Click="NavigationButton_Click" Loaded="NavigationButton_Loaded" Unloaded="NavigationButton_Unloaded"
+                                                  Margin="0,0,0,4" ToolTipService.ToolTip="{Binding Label}"
+                                                  AutomationProperties.AutomationId="{Binding AutomationId}" AutomationProperties.Name="{Binding Label}">
+                                        <UserControl>
+                                            <Grid ColumnSpacing="14">
+                                                <VisualStateManager.VisualStateGroups>
+                                                    <VisualStateGroup x:Name="ItemWidthStates">
+                                                        <VisualState x:Name="ExpandedItem">
+                                                            <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="760" /></VisualState.StateTriggers>
+                                                            <VisualState.Setters><Setter Target="ItemLabel.Visibility" Value="Visible" /></VisualState.Setters>
+                                                        </VisualState>
+                                                        <VisualState x:Name="CompactItem">
+                                                            <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="0" /></VisualState.StateTriggers>
+                                                            <VisualState.Setters><Setter Target="ItemLabel.Visibility" Value="Collapsed" /></VisualState.Setters>
+                                                        </VisualState>
+                                                    </VisualStateGroup>
+                                                </VisualStateManager.VisualStateGroups>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="20" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="{Binding IconPath}" Width="24" Height="24" />
+                                                <TextBlock x:Name="ItemLabel" Grid.Column="1" Text="{Binding Label}" VerticalAlignment="Center" />
+                                            </Grid>
+                                        </UserControl>
+                                    </ToggleButton>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
-                </StackPanel>
-            </ScrollViewer>
-            <Frame x:Name="ContentFrame" Grid.Column="1" Navigated="ContentFrame_Navigated" NavigationFailed="ContentFrame_NavigationFailed" />
+                </ScrollViewer>
+                <Frame x:Name="ContentFrame" Grid.Column="1" Navigated="ContentFrame_Navigated" NavigationFailed="ContentFrame_NavigationFailed" />
+            </Grid>
         </Grid>
-    </Grid>
+    </Page>
 </Window>

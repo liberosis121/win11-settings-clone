@@ -40,7 +40,7 @@
             <Style x:Key="SettingsRowButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="Padding" Value="24,16" />
+                <Setter Property="Padding" Value="22,16" />
                 <Setter Property="MinHeight" Value="68" />
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />

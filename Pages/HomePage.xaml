@@ -1,6 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Page x:Class="SettingsClone.Pages.HomePage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" NavigationCacheMode="Required" Foreground="{StaticResource SettingsTextBrush}">
+<Page x:Class="SettingsClone.Pages.HomePage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" NavigationCacheMode="Required" Foreground="{StaticResource SettingsTextBrush}" Loaded="HomePage_Loaded" SizeChanged="HomePage_SizeChanged">
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="HomeColumnStates">
+                <VisualState x:Name="TwoColumns">
+                    <VisualState.StateTriggers><AdaptiveTrigger x:Name="WideHomeTrigger" MinWindowWidth="1112" /></VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RightCardColumn.Width" Value="*" />
+                        <Setter Target="CardsGrid.ColumnSpacing" Value="8" />
+                        <Setter Target="RightCards.(Grid.Column)" Value="1" />
+                        <Setter Target="RightCards.(Grid.Row)" Value="0" />
+                        <Setter Target="RightCards.Margin" Value="0" />
+                        <Setter Target="DeviceStatuses.(Grid.Column)" Value="1" />
+                        <Setter Target="DeviceStatuses.(Grid.Row)" Value="0" />
+                        <Setter Target="DeviceStatuses.Margin" Value="0" />
+                        <Setter Target="DeviceStatuses.HorizontalAlignment" Value="Right" />
+                        <Setter Target="DeviceSummary.(Grid.ColumnSpan)" Value="1" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="OneColumn">
+                    <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="0" /></VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RightCardColumn.Width" Value="0" />
+                        <Setter Target="CardsGrid.ColumnSpacing" Value="0" />
+                        <Setter Target="RightCards.(Grid.Column)" Value="0" />
+                        <Setter Target="RightCards.(Grid.Row)" Value="1" />
+                        <Setter Target="RightCards.Margin" Value="0,8,0,0" />
+                        <Setter Target="DeviceStatuses.(Grid.Column)" Value="0" />
+                        <Setter Target="DeviceStatuses.(Grid.Row)" Value="1" />
+                        <Setter Target="DeviceStatuses.Margin" Value="0,20,0,0" />
+                        <Setter Target="DeviceStatuses.HorizontalAlignment" Value="Left" />
+                        <Setter Target="DeviceSummary.(Grid.ColumnSpan)" Value="2" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="HeaderWidthStates">
+                <VisualState x:Name="WideHeader">
+                    <VisualState.StateTriggers><AdaptiveTrigger x:Name="WideHeaderTrigger" MinWindowWidth="732" /></VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="DeviceStatuses.Orientation" Value="Horizontal" />
+                        <Setter Target="DeviceImageBorder.Width" Value="120" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="SmallHeader">
+                    <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="0" /></VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="DeviceStatuses.Orientation" Value="Vertical" />
+                        <Setter Target="DeviceImageBorder.Width" Value="88" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="DeviceRowWidthStates">
+                <VisualState x:Name="WideDeviceRows">
+                    <VisualState.StateTriggers><AdaptiveTrigger x:Name="WideDeviceRowsTrigger" MinWindowWidth="1192" /></VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="FirstDeviceActions.(Grid.Row)" Value="0" />
+                        <Setter Target="FirstDeviceActions.(Grid.Column)" Value="2" />
+                        <Setter Target="FirstDeviceActions.(Grid.ColumnSpan)" Value="1" />
+                        <Setter Target="FirstDeviceActions.Margin" Value="0" />
+                        <Setter Target="SecondDeviceActions.(Grid.Row)" Value="0" />
+                        <Setter Target="SecondDeviceActions.(Grid.Column)" Value="2" />
+                        <Setter Target="SecondDeviceActions.(Grid.ColumnSpan)" Value="1" />
+                        <Setter Target="SecondDeviceActions.Margin" Value="0" />
+                        <Setter Target="AddDeviceActions.(Grid.Row)" Value="0" />
+                        <Setter Target="AddDeviceActions.(Grid.Column)" Value="1" />
+                        <Setter Target="AddDeviceActions.Margin" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="CompactDeviceRows">
+                    <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="0" /></VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="FirstDeviceActions.(Grid.Row)" Value="1" />
+                        <Setter Target="FirstDeviceActions.(Grid.Column)" Value="1" />
+                        <Setter Target="FirstDeviceActions.(Grid.ColumnSpan)" Value="2" />
+                        <Setter Target="FirstDeviceActions.Margin" Value="0,12,0,0" />
+                        <Setter Target="SecondDeviceActions.(Grid.Row)" Value="1" />
+                        <Setter Target="SecondDeviceActions.(Grid.Column)" Value="1" />
+                        <Setter Target="SecondDeviceActions.(Grid.ColumnSpan)" Value="2" />
+                        <Setter Target="SecondDeviceActions.Margin" Value="0,12,0,0" />
+                        <Setter Target="AddDeviceActions.(Grid.Row)" Value="1" />
+                        <Setter Target="AddDeviceActions.(Grid.Column)" Value="0" />
+                        <Setter Target="AddDeviceActions.Margin" Value="0,12,0,0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="BackupWidthStates">
+                <VisualState x:Name="WideBackup">
+                    <VisualState.StateTriggers><AdaptiveTrigger x:Name="WideBackupTrigger" MinWindowWidth="1232" /></VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BackupStatusText.(Grid.Row)" Value="0" />
+                        <Setter Target="BackupStatusText.(Grid.Column)" Value="2" />
+                        <Setter Target="BackupStatusText.Margin" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="CompactBackup">
+                    <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="0" /></VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BackupStatusText.(Grid.Row)" Value="1" />
+                        <Setter Target="BackupStatusText.(Grid.Column)" Value="1" />
+                        <Setter Target="BackupStatusText.Margin" Value="0,4,0,0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -11,7 +113,7 @@
         <ScrollViewer x:Name="HomeScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" HorizontalScrollMode="Disabled" AutomationProperties.AutomationId="HomeScrollViewer">
             <!-- Constrain the layout to the viewport before centering the content. -->
             <Grid Width="{Binding ViewportWidth, ElementName=HomeScrollViewer}">
-                <StackPanel x:Name="HomeContent" MaxWidth="1000" Margin="24,0,24,32" Spacing="32" SizeChanged="HomeContent_SizeChanged">
+                <StackPanel x:Name="HomeContent" MaxWidth="1000" Margin="24,0,24,32" Spacing="31" SizeChanged="HomeContent_SizeChanged">
                     <Grid x:Name="DeviceHeader" ColumnSpacing="24" RowSpacing="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -27,11 +129,11 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Border x:Name="DeviceImageBorder" Width="120" Height="76" BorderThickness="4" BorderBrush="Black" CornerRadius="5" Background="#90B5C9">
-                                <Image Source="ms-appx:///Assets/DeviceWallpaper.svg" Stretch="UniformToFill" AutomationProperties.Name="Blue device illustration" />
+                                <Image Source="ms-appx:///Assets/WindowsBloom.jpg" Stretch="UniformToFill" AutomationProperties.Name="Windows 11 blue Bloom device preview" />
                             </Border>
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,8,0,0">
                                 <TextBlock x:Name="DeviceNameText" Text="LAPTOP-IUCD4DSS" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap" />
-                                <TextBlock Text="IdeaPad Slim 3 15ARP10" FontSize="14" TextWrapping="Wrap" Margin="0,2,0,0" />
+                                <TextBlock x:Name="DeviceModelText" Text="IdeaPad Slim 3 15ARP10" FontSize="14" TextWrapping="Wrap" Margin="0,2,0,0" />
                                 <Button Content="Rename" Style="{StaticResource LinkButtonStyle}" Click="RenameButton_Click" AutomationProperties.AutomationId="RenameDevice" ToolTipService.ToolTip="Rename this demo device only." />
                             </StackPanel>
                         </Grid>
@@ -82,7 +184,7 @@
                         <StackPanel x:Name="LeftCards" Spacing="8">
                             <Border x:Name="RecommendedCard" Style="{StaticResource SettingsCardStyle}" AutomationProperties.AutomationId="RecommendedCard">
                                 <StackPanel>
-                                    <StackPanel Padding="24,24,24,22" Spacing="12" MinHeight="106">
+                                    <StackPanel Padding="22,24,22,22" Spacing="12" MinHeight="106">
                                         <TextBlock Text="Recommended settings" Style="{StaticResource CardTitleStyle}" />
                                         <TextBlock Text="Recent and commonly used settings" Style="{StaticResource SecondaryTextStyle}" />
                                     </StackPanel>
@@ -94,7 +196,12 @@
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <FontIcon Glyph="&#xE72E;" FontSize="20" />
+                                            <Grid Width="20" Height="20">
+                                                <Border Width="18" Height="14" BorderThickness="1.5" BorderBrush="#202020" CornerRadius="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" />
+                                                <Border Width="10" Height="12" Background="{StaticResource SettingsCardBrush}" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                                    <FontIcon Glyph="&#xE72E;" FontSize="10" />
+                                                </Border>
+                                            </Grid>
                                             <TextBlock Grid.Column="1" Text="Lock screen" VerticalAlignment="Center" TextWrapping="Wrap" />
                                             <FontIcon Grid.Column="2" Glyph="&#xE76C;" FontSize="12" />
                                         </Grid>
@@ -107,7 +214,7 @@
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <FontIcon Glyph="&#xE787;" FontSize="20" />
+                                            <FontIcon Glyph="&#xEC92;" FontSize="20" />
                                             <TextBlock Grid.Column="1" Text="Date &amp; time" VerticalAlignment="Center" TextWrapping="Wrap" />
                                             <FontIcon Grid.Column="2" Glyph="&#xE76C;" FontSize="12" />
                                         </Grid>
@@ -120,7 +227,7 @@
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <FontIcon Glyph="&#xE775;" FontSize="20" />
+                                            <FontIcon Glyph="&#xF2B7;" FontSize="20" />
                                             <TextBlock Grid.Column="1" Text="Language &amp; region" VerticalAlignment="Center" TextWrapping="Wrap" />
                                             <FontIcon Grid.Column="2" Glyph="&#xE76C;" FontSize="12" />
                                         </Grid>
@@ -129,12 +236,12 @@
                             </Border>
                             <Border x:Name="BluetoothCard" Style="{StaticResource SettingsCardStyle}" AutomationProperties.AutomationId="BluetoothCard">
                                 <StackPanel>
-                                    <StackPanel Padding="24,24,24,22" Spacing="12" MinHeight="106">
+                                    <StackPanel Padding="22,24,22,22" Spacing="12" MinHeight="106">
                                         <TextBlock Text="Bluetooth devices" Style="{StaticResource CardTitleStyle}" />
                                         <TextBlock Text="Manage, add, and remove devices" Style="{StaticResource SecondaryTextStyle}" />
                                     </StackPanel>
                                     <Border Height="1" Background="{StaticResource SettingsBorderBrush}" />
-                                    <Grid Padding="24,16" ColumnSpacing="20" MinHeight="68">
+                                    <Grid Padding="22,16" ColumnSpacing="20" MinHeight="68">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="24" />
                                             <ColumnDefinition Width="*" />
@@ -151,7 +258,7 @@
                                         </StackPanel>
                                     </Grid>
                                     <Border Height="1" Background="{StaticResource SettingsBorderBrush}" />
-                                    <Grid x:Name="FirstDeviceRow" Padding="24,16" ColumnSpacing="16" MinHeight="68">
+                                    <Grid x:Name="FirstDeviceRow" Padding="22,16" ColumnSpacing="16" MinHeight="68">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
@@ -161,7 +268,7 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <FontIcon Glyph="&#xE7F6;" FontSize="24" Foreground="#87939C" />
+                                        <Image Source="ms-appx:///Assets/Headphones.svg" Width="24" Height="24" AutomationProperties.Name="Headphones" />
                                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                             <TextBlock Text="Realfit F1" TextWrapping="Wrap" />
                                             <TextBlock x:Name="FirstDeviceStatusText" Text="Bluetooth is turned off" FontSize="12" Foreground="{StaticResource SettingsSecondaryTextBrush}" TextWrapping="Wrap" />
@@ -180,7 +287,7 @@
                                         </StackPanel>
                                     </Grid>
                                     <Border Height="1" Background="{StaticResource SettingsBorderBrush}" />
-                                    <Grid x:Name="SecondDeviceRow" Padding="24,16" ColumnSpacing="16" MinHeight="68">
+                                    <Grid x:Name="SecondDeviceRow" Padding="22,16" ColumnSpacing="16" MinHeight="68">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
@@ -190,7 +297,7 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <FontIcon Glyph="&#xE7F6;" FontSize="24" Foreground="#87939C" />
+                                        <Image Source="ms-appx:///Assets/Headphones.svg" Width="24" Height="24" AutomationProperties.Name="Headphones" />
                                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                             <TextBlock Text="ERAZER XT66PRO" TextWrapping="Wrap" />
                                             <TextBlock x:Name="SecondDeviceStatusText" Text="Bluetooth is turned off" FontSize="12" Foreground="{StaticResource SettingsSecondaryTextBrush}" TextWrapping="Wrap" />
@@ -209,7 +316,7 @@
                                         </StackPanel>
                                     </Grid>
                                     <Border Height="1" Background="{StaticResource SettingsBorderBrush}" />
-                                    <Grid x:Name="BluetoothFooter" Padding="24,16" ColumnSpacing="12">
+                                    <Grid x:Name="BluetoothFooter" Padding="22,16" ColumnSpacing="12">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
@@ -229,11 +336,11 @@
                         </StackPanel>
                         <StackPanel x:Name="RightCards" Grid.Column="1" Spacing="8">
                             <Border x:Name="Microsoft365Card" Style="{StaticResource SettingsCardStyle}" AutomationProperties.AutomationId="Microsoft365Card">
-                                <StackPanel Padding="24">
+                                <StackPanel Padding="24,24,24,22">
                                     <Image Source="ms-appx:///Assets/MicrosoftLogo.svg" Width="24" Height="24" HorizontalAlignment="Left" AutomationProperties.Name="Microsoft" />
                                     <TextBlock Text="Try Microsoft 365" Style="{StaticResource CardTitleStyle}" Margin="0,20,0,12" />
                                     <TextBlock Text="Experience desktop versions of apps like Word, PowerPoint, and more with AI-powered features, secure cloud storage for photos and files, and advanced security." Style="{StaticResource SecondaryTextStyle}" LineHeight="20" />
-                                    <Image x:Name="MicrosoftAppsImage" Source="ms-appx:///Assets/Microsoft365Apps.svg" Width="312" MaxWidth="312" Height="28" Stretch="Uniform" HorizontalAlignment="Left" Margin="0,24,0,32" AutomationProperties.Name="Microsoft 365 app illustrations" />
+                                    <Image x:Name="MicrosoftAppsImage" Source="ms-appx:///Assets/Microsoft365Apps.svg" MaxWidth="312" Height="24" Stretch="Uniform" HorizontalAlignment="Left" Margin="0,24,0,34" AutomationProperties.Name="Copilot, Word, Excel, PowerPoint, Outlook, OneNote, OneDrive, Defender, Designer and Clipchamp" />
                                     <Button Content="Try for free" Tag="Try Microsoft 365" Style="{StaticResource AccentButtonStyle}" Width="132" HorizontalAlignment="Left" Click="MockAction_Click" />
                                 </StackPanel>
                             </Border>
@@ -263,7 +370,7 @@
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <FontIcon Glyph="&#xE753;" FontSize="20" />
+                                            <Image Source="ms-appx:///Assets/BackupCloud.svg" Width="20" Height="20" AutomationProperties.Name="Cloud backup" />
                                             <TextBlock Grid.Column="1" Text="PC backup" VerticalAlignment="Center" TextWrapping="Wrap" />
                                             <TextBlock x:Name="BackupStatusText" Grid.Column="2" Text="Partially backed up" Foreground="#A65E00" VerticalAlignment="Center" TextWrapping="Wrap" />
                                             <FontIcon Grid.Column="3" Glyph="&#xE8A7;" FontSize="14" />

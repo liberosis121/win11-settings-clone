@@ -4,19 +4,37 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
+using SettingsClone.Helpers;
+using SettingsClone.Models;
 using SettingsClone.Pages;
 using System;
+using System.Collections.Generic;
 using Windows.System;
 
 namespace SettingsClone
 {
     public sealed partial class MainWindow : Window
     {
-        private bool isDialogOpen;
+        private readonly List<ToggleButton> navigationButtons = new();
 
         public MainWindow()
         {
             InitializeComponent();
+            NavigationItems.ItemsSource = new[]
+            {
+                new NavigationItem("Home", "Home", "NavHome", typeof(HomePage)),
+                new NavigationItem("System", "System", "NavSystem", typeof(SystemPage)),
+                new NavigationItem("Bluetooth & devices", "Bluetooth", "NavBluetooth"),
+                new NavigationItem("Network & internet", "Network", "NavNetwork"),
+                new NavigationItem("Personalization", "Personalization", "NavPersonalization"),
+                new NavigationItem("Apps", "Apps", "NavApps"),
+                new NavigationItem("Accounts", "Accounts", "NavAccounts"),
+                new NavigationItem("Time & language", "Time", "NavTime"),
+                new NavigationItem("Gaming", "Gaming", "NavGaming"),
+                new NavigationItem("Accessibility", "Accessibility", "NavAccessibility"),
+                new NavigationItem("Privacy & security", "Privacy", "NavPrivacy"),
+                new NavigationItem("Windows Update", "Update", "NavUpdate")
+            };
             // The TitleBar manages drag regions; caption buttons remain native.
             ExtendsContentIntoTitleBar = true;
             SetTitleBar(SettingsTitleBar);
@@ -27,29 +45,54 @@ namespace SettingsClone
             ContentFrame.Navigate(typeof(HomePage));
         }
 
+        private void NavigationButton_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleButton button && !navigationButtons.Contains(button))
+            {
+                navigationButtons.Add(button);
+                UpdateNavigationState();
+            }
+        }
+
+        private void NavigationButton_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleButton button)
+            {
+                navigationButtons.Remove(button);
+            }
+        }
+
         private async void NavigationButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is not ToggleButton button)
+            if (sender is not ToggleButton button || button.Tag is not NavigationItem item)
             {
                 return;
             }
-            string destination = button.Tag?.ToString() ?? string.Empty;
-            if (destination == "Home" || destination == "System")
+            if (item.PageType != null)
             {
-                NavigateTo(destination == "Home" ? typeof(HomePage) : typeof(SystemPage));
+                NavigateTo(item.PageType);
             }
             else
             {
                 button.IsChecked = false;
-                await ShowMockDialogAsync(destination);
+                await DialogHelper.ShowMockAsync(ShellGrid.XamlRoot, item.Label);
             }
         }
 
         private void NavigateTo(Type pageType)
         {
+            if (DialogHelper.IsOpen)
+            {
+                UpdateNavigationState();
+                return;
+            }
             if (ContentFrame.CurrentSourcePageType != pageType)
             {
-                ContentFrame.Navigate(pageType);
+                // System receives the current mock device, including a renamed label.
+                object? parameter = pageType == typeof(SystemPage) && ContentFrame.Content is HomePage home
+                    ? home.GetDeviceInfo()
+                    : null;
+                ContentFrame.Navigate(pageType, parameter);
             }
             UpdateNavigationState();
         }
@@ -61,14 +104,17 @@ namespace SettingsClone
 
         private void UpdateNavigationState()
         {
-            HomeButton.IsChecked = ContentFrame.CurrentSourcePageType == typeof(HomePage);
-            SystemButton.IsChecked = ContentFrame.CurrentSourcePageType == typeof(SystemPage);
+            foreach (ToggleButton button in navigationButtons)
+            {
+                button.IsChecked = button.Tag is NavigationItem item
+                    && item.PageType != null && item.PageType == ContentFrame.CurrentSourcePageType;
+            }
             SettingsTitleBar.IsBackButtonEnabled = ContentFrame.CanGoBack;
         }
 
         private void SettingsTitleBar_BackRequested(TitleBar sender, object args)
         {
-            if (ContentFrame.CanGoBack)
+            if (!DialogHelper.IsOpen && ContentFrame.CanGoBack)
             {
                 ContentFrame.GoBack();
             }
@@ -76,7 +122,14 @@ namespace SettingsClone
 
         private void ContentFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
-            throw new InvalidOperationException($"Cannot open {e.SourcePageType.FullName}.", e.Exception);
+            e.Handled = true;
+            // Defer the dialog until Frame has finished handling the failed navigation.
+            DispatcherQueue.TryEnqueue(async () =>
+            {
+                UpdateNavigationState();
+                await DialogHelper.ShowMessageAsync(ShellGrid.XamlRoot, "Page unavailable",
+                    "The selected page could not be opened. Please choose Home or System and try again.");
+            });
         }
 
         private async void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -97,59 +150,15 @@ namespace SettingsClone
             }
             else
             {
-                await ShowMockDialogAsync("Search", "This demo can open Home or System. Other settings are shown for the screen-cloning exercise only.");
-            }
-        }
-
-        private async System.Threading.Tasks.Task ShowMockDialogAsync(string title, string? message = null)
-        {
-            if (isDialogOpen)
-            {
-                return;
-            }
-            isDialogOpen = true;
-            try
-            {
-                ContentDialog dialog = new ContentDialog
-                {
-                    XamlRoot = ShellGrid.XamlRoot,
-                    Title = $"{title} (demo)",
-                    Content = message ?? "This is a mock action for HW1012. No Windows settings are changed and no online service is opened.",
-                    CloseButtonText = "OK",
-                    DefaultButton = ContentDialogButton.Close
-                };
-                await dialog.ShowAsync();
-            }
-            finally
-            {
-                isDialogOpen = false;
+                await DialogHelper.ShowMockAsync(ShellGrid.XamlRoot, "Search",
+                    "This demo can open Home or System. Other settings are shown for the screen-cloning exercise only.");
             }
         }
 
         private void ShellGrid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            bool isCompact = e.NewSize.Width < 760;
-            SidebarColumn.Width = new GridLength(isCompact ? 72 : e.NewSize.Width < 1000 ? 228 : 304);
-            ProfileDetails.Visibility = isCompact ? Visibility.Collapsed : Visibility.Visible;
-            AvatarBorder.Width = isCompact ? 40 : 60;
-            AvatarBorder.Height = isCompact ? 40 : 60;
-            foreach (UIElement item in NavigationItems.Children)
-            {
-                if (item is ToggleButton button && button.Content is Grid itemGrid)
-                {
-                    itemGrid.ColumnSpacing = isCompact ? 0 : 14;
-                    foreach (UIElement child in itemGrid.Children)
-                    {
-                        if (child is TextBlock label)
-                        {
-                            label.Visibility = isCompact ? Visibility.Collapsed : Visibility.Visible;
-                        }
-                    }
-                    ToolTipService.SetToolTip(button, button.Tag?.ToString());
-                }
-            }
-            SearchContainer.Width = Math.Clamp(e.NewSize.Width - 440, 120, 520);
-            SearchContainer.Margin = e.NewSize.Width >= 1200 ? new Thickness(120, 0, 0, 0) : new Thickness(0);
+            // Visual states handle the shell layout; only the search width varies continuously.
+            SearchContainer.Width = Math.Clamp(e.NewSize.Width - 440, 120, 514);
         }
     }
 }
