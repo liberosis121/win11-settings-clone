@@ -7,7 +7,7 @@
 - This project simulates the Windows Settings interface; it must not change real Windows settings.
 - Solution: `SettingsClone.slnx`. Project: `SettingsClone.csproj` at the repository root.
 - Current baseline: .NET target `net8.0-windows10.0.19041.0`, Windows App SDK `2.5.1`, and Windows SDK BuildTools `10.0.28000.2705`. Preserve these unless a task requires a change.
-- Current scope is repository setup only. Do not create HomePage or SystemPage or implement the Settings UI in MainWindow until the user requests UI work.
+- HomePage and a minimal SystemPage are implemented following the user's approved UI task. Keep Home visual fidelity the priority; add other pages only when requested. Always follow the latest user instruction about analysis, implementation, commits, and pushes.
 
 ## Technology constraints
 
