@@ -248,21 +248,3 @@ Trong quá trình kiểm thử đã sửa lỗi await dialog thiếu `using Syst
 
 Ảnh trong README là bằng chứng review. Giao diện ứng dụng được dựng bằng control XAML; không dùng screenshot đề bài làm background hoặc cắt screenshot để giả lập các card.
 
-## Lịch sử triển khai và chuẩn bị nộp bài
-
-Các thay đổi ứng dụng được chia thành commit theo công việc để dễ review:
-
-| Commit | Nội dung |
-| --- | --- |
-| `1aa5d32` | Thêm bốn minh họa SVG và khai báo assets |
-| `76d0592` | Triển khai Home, shell và navigation Home/System |
-| `112600e` | Tinh chỉnh căn lề Home và trình bày responsive |
-| `c061093` | Sửa selected state sidebar và giới hạn layout System theo viewport |
-| `38c4230` | Ghi kết quả kiểm thử, hướng dẫn chạy và thêm screenshot |
-| `e677ede` | Bổ sung tài liệu bài giảng WinUI 3 vào repository |
-| `8dab582` | Thêm thông tin sinh viên, hướng dẫn review và ảnh chụp |
-| `ff308e9` | Thêm wallpaper và icon màu, ghi nguồn/giấy phép tài nguyên |
-| `cc5d34e` | AdaptiveTrigger, DataTemplate, truyền DeviceInfo và dialog dùng chung |
-| `6d4b1f2` | Sửa cột icon và khoảng cách ở sidebar thu gọn, tránh cắt hình |
-
-Trước khi nộp: review UI và các commit, build/chạy lại bằng Visual Studio, kiểm tra resize và mock actions. Clean Solution trước khi đóng gói bài; bỏ `.vs/`, `bin/`, `obj/` và file IDE cá nhân, giữ mã nguồn, solution/project, tài nguyên và tài liệu cần thiết để build lại.
