@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="200" viewBox="0 0 320 200">
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#9FC3D5"/><stop offset="1" stop-color="#C2D6E0"/></linearGradient>
+    <linearGradient id="fold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#43D5FF"/><stop offset=".3" stop-color="#1689F2"/><stop offset=".7" stop-color="#155DCC"/><stop offset="1" stop-color="#062A7D"/></linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#3BB9FF"/><stop offset=".45" stop-color="#0846BE"/><stop offset="1" stop-color="#021E63"/></linearGradient>
+  </defs>
+  <path fill="url(#bg)" d="M0 0h320v200H0z"/>
+  <path fill="url(#fold)" d="M110 200C77 164 104 141 156 108 219 66 170 37 203 27 245 15 276 48 254 86 230 129 170 155 164 200z"/>
+  <path fill="url(#edge)" d="M142 200c-43-49-47-63 12-102 42-28 64-44 57-66 31 18 18 53-34 86-34 22-41 36-8 82z"/>
+  <path fill="url(#fold)" d="M91 193C50 149 94 124 144 121 192 117 204 89 201 67 224 92 228 133 175 144 133 153 160 182 193 200z"/>
+  <path fill="url(#edge)" d="M74 170c25-39 77-27 95-36 27-14 45-12 60 1 24 21 13 52-23 65h-87c-19-9-36-16-45-30z"/>
+  <path fill="url(#fold)" d="M83 156c34-16 63-9 85-6 32 5 53-12 57-31 9 24-5 49-37 52-44 5-68-11-105-15z"/>
+  <path fill="url(#fold)" d="M96 200c8-33 35-45 76-38 30 5 50 19 53 38z"/>
+  <path fill="none" stroke="#65CFFF" stroke-width="2" opacity=".6" d="M121 175c-31-38-23-50 34-82 45-26 70-47 51-62M83 156c38-14 68-5 91-4"/>
+</svg>

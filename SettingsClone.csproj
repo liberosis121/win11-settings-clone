@@ -22,6 +22,10 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Assets\DeviceWallpaper.svg" />
+    <Content Include="Assets\MicrosoftLogo.svg" />
+    <Content Include="Assets\Microsoft365Apps.svg" />
+    <Content Include="Assets\OneDriveLogo.svg" />
   </ItemGroup>
 
   <ItemGroup>
