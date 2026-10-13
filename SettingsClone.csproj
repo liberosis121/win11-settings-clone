@@ -26,6 +26,12 @@
     <Content Include="Assets\MicrosoftLogo.svg" />
     <Content Include="Assets\Microsoft365Apps.svg" />
     <Content Include="Assets\OneDriveLogo.svg" />
+    <Content Include="Assets\WindowsBloom.jpg" />
+    <Content Include="Assets\Headphones.svg" />
+    <Content Include="Assets\BackupCloud.svg" />
+    <Content Include="Assets\Navigation\*.svg" />
+    <Content Include="Assets\Navigation\LICENSE.txt" />
+    <Content Include="Assets\Office-Assets-LICENSE.txt" />
   </ItemGroup>
 
   <ItemGroup>
