@@ -93,22 +93,30 @@
                                                   Margin="0,0,0,4" ToolTipService.ToolTip="{Binding Label}"
                                                   AutomationProperties.AutomationId="{Binding AutomationId}" AutomationProperties.Name="{Binding Label}">
                                         <UserControl>
-                                            <Grid ColumnSpacing="14">
+                                            <Grid x:Name="ItemGrid" ColumnSpacing="14">
                                                 <VisualStateManager.VisualStateGroups>
                                                     <VisualStateGroup x:Name="ItemWidthStates">
                                                         <VisualState x:Name="ExpandedItem">
                                                             <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="760" /></VisualState.StateTriggers>
-                                                            <VisualState.Setters><Setter Target="ItemLabel.Visibility" Value="Visible" /></VisualState.Setters>
+                                                        <VisualState.Setters>
+                                                            <Setter Target="ItemLabel.Visibility" Value="Visible" />
+                                                            <Setter Target="ItemGrid.ColumnSpacing" Value="14" />
+                                                            <Setter Target="ItemTextColumn.Width" Value="*" />
+                                                        </VisualState.Setters>
                                                         </VisualState>
                                                         <VisualState x:Name="CompactItem">
                                                             <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="0" /></VisualState.StateTriggers>
-                                                            <VisualState.Setters><Setter Target="ItemLabel.Visibility" Value="Collapsed" /></VisualState.Setters>
+                                                        <VisualState.Setters>
+                                                            <Setter Target="ItemLabel.Visibility" Value="Collapsed" />
+                                                            <Setter Target="ItemGrid.ColumnSpacing" Value="0" />
+                                                            <Setter Target="ItemTextColumn.Width" Value="0" />
+                                                        </VisualState.Setters>
                                                         </VisualState>
                                                     </VisualStateGroup>
                                                 </VisualStateManager.VisualStateGroups>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="20" />
-                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="24" />
+                                                    <ColumnDefinition x:Name="ItemTextColumn" Width="*" />
                                                 </Grid.ColumnDefinitions>
                                                 <Image Source="{Binding IconPath}" Width="24" Height="24" />
                                                 <TextBlock x:Name="ItemLabel" Grid.Column="1" Text="{Binding Label}" VerticalAlignment="Center" />
