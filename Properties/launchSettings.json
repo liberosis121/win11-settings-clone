@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SettingsClone (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "SettingsClone (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
