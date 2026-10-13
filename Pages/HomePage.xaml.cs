@@ -22,6 +22,7 @@ namespace SettingsClone.Pages
                 return;
             }
             bool isBluetoothOn = BluetoothToggle.IsOn;
+            BluetoothPowerText.Text = isBluetoothOn ? "On" : "Off";
             FirstConnectButton.IsEnabled = isBluetoothOn;
             SecondConnectButton.IsEnabled = isBluetoothOn;
             BluetoothStatusText.Text = isBluetoothOn ? "Bluetooth is turned on (demo)" : "Bluetooth is turned off";
@@ -86,6 +87,7 @@ namespace SettingsClone.Pages
                     Text = DeviceNameText.Text,
                     MaxLength = 32
                 };
+                Microsoft.UI.Xaml.Automation.AutomationProperties.SetAutomationId(nameBox, "RenameNameInput");
                 ContentDialog dialog = new ContentDialog
                 {
                     XamlRoot = XamlRoot,

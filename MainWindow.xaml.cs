@@ -137,7 +137,7 @@ namespace SettingsClone
             {
                 if (item is ToggleButton button && button.Content is Grid itemGrid)
                 {
-                    itemGrid.ColumnSpacing = isCompact ? 0 : 16;
+                    itemGrid.ColumnSpacing = isCompact ? 0 : 14;
                     foreach (UIElement child in itemGrid.Children)
                     {
                         if (child is TextBlock label)
@@ -149,6 +149,7 @@ namespace SettingsClone
                 }
             }
             SearchContainer.Width = Math.Clamp(e.NewSize.Width - 440, 120, 520);
+            SearchContainer.Margin = e.NewSize.Width >= 1200 ? new Thickness(120, 0, 0, 0) : new Thickness(0);
         }
     }
 }
