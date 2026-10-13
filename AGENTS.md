@@ -59,7 +59,7 @@
 - Keep `.vs/`, `bin/`, `obj/`, build artifacts, IDE personal files, logs, temporary files, and `.env` files out of Git.
 - Keep source C#, XAML, `.csproj`, `.sln`/`.slnx`, required assets, `References/`, `AGENTS.md`, and README eligible for tracking.
 - The three checked-in `Properties/PublishProfiles/win-*.pubxml` files are non-secret build profiles used by the project. Preserve them; never put credentials in them.
-- Do not make the repository public without explicit permission. The requested GitHub repository is private and named `HW1012-SettingsClone`.
+- Do not make the repository public without explicit permission. The requested GitHub repository is private and named `settings-clone`.
 - Do not overwrite an existing `origin` without user confirmation.
 - Do not amend old commits or rewrite history without permission.
 - Preserve user files and existing configuration; review and extend existing setup instead of replacing it blindly.
